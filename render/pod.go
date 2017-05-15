@@ -111,6 +111,13 @@ var DaemonSetRenderer = ConditionalRenderer(renderKubernetesTopologies,
 	),
 )
 
+// ReplicaGroupRenderer is a Renderer which combines the daemonset and deployment views
+// in (for now) a very naive way.
+var ReplicaGroupRenderer = MakeReduce(
+	DeploymentRenderer,
+	DaemonSetRenderer,
+)
+
 func mapPodCounts(parent, original report.Node) report.Node {
 	// When mapping ReplicaSets to Deployments, we want to propagate the Pods counter
 	if count, ok := original.Counters.Lookup(report.Pod); ok {
